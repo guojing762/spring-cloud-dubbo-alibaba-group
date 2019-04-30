@@ -15,7 +15,7 @@ public interface EchoService {
 ```
 
 为了确保契约的一致性，推荐的做法是将 Dubbo 服务接口打包在第二方或者第三方的 artifact（jar）中，如以上接口就存放在
- artifact [spring-cloud-dubbo-sample-api](https://github.com/spring-cloud-incubator/spring-cloud-alibaba/tree/master/spring-cloud-alibaba-examples/spring-cloud-alibaba-dubbo-examples/spring-cloud-dubbo-sample-api) 之中。
+ artifact [spring-cloud-dubbo-sample-api](https://github.com/spring-cloud-incubator/spring-cloud-alibaba/tree/master/spring-cloud-alibaba-examples/spring-cloud-dubbo-alibaba-group/spring-cloud-dubbo-sample-api) 之中。
 对于服务提供方而言，不仅通过依赖 artifact 的形式引入 Dubbo 服务接口，而且需要将其实现。对应的服务消费端，同样地需要依赖该 artifact，
 并以接口调用的方式执行远程方法。接下来进一步讨论怎样实现 Dubbo 服务提供方和消费方。
 
