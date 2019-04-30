@@ -18,10 +18,13 @@ package org.springframework.cloud.alibaba.dubbo.bootstrap;
 
 import org.apache.dubbo.config.annotation.Reference;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.cloud.alibaba.dubbo.bootstrap.customer.SayService;
 import org.springframework.cloud.alibaba.dubbo.service.EchoService;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,14 +34,19 @@ import org.springframework.web.bind.annotation.RestController;
 @EnableDiscoveryClient
 @EnableAutoConfiguration
 @RestController
+@ComponentScan(basePackages={"org.springframework.cloud.alibaba.dubbo.bootstrap"})
 public class DubboSpringCloudClientBootstrap {
 
-    @Reference
-    private EchoService echoService;
+    /**
+     * @Reference(version = "${foo.service.version}", application = "${dubbo.application.id}",
+     *         path = "dubbo://localhost:12345", timeout = 30000)
+     */
+    @Autowired
+    private SayService sayService;
 
     @GetMapping("/echo")
     public String echo(String message) {
-        return echoService.echo(message);
+        return sayService.echo(message);
     }
 
     public static void main(String[] args) {

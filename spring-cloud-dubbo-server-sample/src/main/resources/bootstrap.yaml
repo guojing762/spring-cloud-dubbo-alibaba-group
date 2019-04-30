@@ -16,3 +16,10 @@ spring:
     nacos:
       discovery:
         server-addr: 172.22.3.104:8848
+      config:
+        server-addr: 172.22.3.104:8848
+        prefix: dubbo-group-customer
+        file-extension: yaml
+  profiles:
+    active: dev
+

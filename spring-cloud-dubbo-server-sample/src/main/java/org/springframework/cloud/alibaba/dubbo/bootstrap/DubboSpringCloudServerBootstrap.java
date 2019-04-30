@@ -19,27 +19,27 @@ package org.springframework.cloud.alibaba.dubbo.bootstrap;
 import org.apache.dubbo.config.annotation.Service;
 
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.cloud.alibaba.dubbo.service.EchoService;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.context.annotation.ComponentScan;
 
 /**
  * Dubbo Spring Cloud Server Bootstrap
  */
 @EnableDiscoveryClient
 @EnableAutoConfiguration
+@ComponentScan(basePackages={"org.springframework.cloud.alibaba.dubbo.bootstrap"})
 public class DubboSpringCloudServerBootstrap {
 
     public static void main(String[] args) {
-        SpringApplication.run(DubboSpringCloudServerBootstrap.class);
+        SpringApplicationBuilder providerBuilder = new SpringApplicationBuilder();
+        providerBuilder.web(WebApplicationType.NONE)
+                .sources(DubboSpringCloudServerBootstrap.class).run(args);
+
+//        SpringApplication.run(DubboSpringCloudServerBootstrap.class);
     }
 }
 
-@Service
-class EchoServiceImpl implements EchoService {
-
-    @Override
-    public String echo(String message) {
-        return "[echo] Hello, " + message;
-    }
-}
