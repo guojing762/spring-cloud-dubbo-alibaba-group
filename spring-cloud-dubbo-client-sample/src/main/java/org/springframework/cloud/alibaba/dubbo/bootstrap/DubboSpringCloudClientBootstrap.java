@@ -16,17 +16,26 @@
  */
 package org.springframework.cloud.alibaba.dubbo.bootstrap;
 
+import com.alibaba.csp.sentinel.slots.block.RuleConstant;
+import com.alibaba.csp.sentinel.slots.block.SentinelRpcException;
+import com.alibaba.csp.sentinel.slots.block.flow.FlowRule;
+import com.alibaba.csp.sentinel.slots.block.flow.FlowRuleManager;
 import org.apache.dubbo.config.annotation.Reference;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.cloud.alibaba.dubbo.bootstrap.customer.SayService;
 import org.springframework.cloud.alibaba.dubbo.service.EchoService;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Collections;
 
 /**
  * Dubbo Spring Cloud Client Bootstrap
@@ -50,6 +59,32 @@ public class DubboSpringCloudClientBootstrap {
     }
 
     public static void main(String[] args) {
-        SpringApplication.run(DubboSpringCloudClientBootstrap.class);
+        FlowRule flowRule = new FlowRule();
+        flowRule.setResource(
+                "org.springframework.cloud.alibaba.dubbo.service:echo(java.lang.String)");
+        flowRule.setCount(10);
+        flowRule.setGrade(RuleConstant.FLOW_GRADE_QPS);
+        flowRule.setLimitApp("default");
+        FlowRuleManager.loadRules(Collections.singletonList(flowRule));
+
+        SpringApplicationBuilder consumerBuilder = new SpringApplicationBuilder();
+        ApplicationContext applicationContext = consumerBuilder
+                .web(WebApplicationType.NONE).sources(DubboSpringCloudClientBootstrap.class)
+                .run(args);
+
+        SayService service = applicationContext.getBean(SayService.class);
+
+        for (int i = 0; i < 15; i++) {
+            try {
+                String message = service.echo("Jim");
+                System.out.println((i + 1) + " -> Success: " + message);
+            }
+            catch (SentinelRpcException ex) {
+                System.out.println("Blocked");
+            }
+            catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
     }
 }

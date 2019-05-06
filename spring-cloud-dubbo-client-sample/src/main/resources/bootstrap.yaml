@@ -3,6 +3,8 @@ dubbo:
     address: spring-cloud://localhost
   cloud:
     subscribed-services: spring-cloud-alibaba-dubbo-server
+  application:
+    qos-port: 22223
 
 spring:
   application:

@@ -23,42 +23,42 @@ eureka:
 
 ---
 spring:
-  profiles: nacos
+  profiles: dev
 
   cloud:
     nacos:
       discovery:
         enabled: true
         register-enabled: true
-        server-addr: 127.0.0.1:8848
+        server-addr: 172.22.3.104:8848
 
 
----
-spring:
-  profiles: eureka
-
-eureka:
-  client:
-    enabled: true
-    service-url:
-      defaultZone: http://127.0.0.1:8761/eureka/
-
-
----
-spring:
-  profiles: zookeeper
-  cloud:
-    zookeeper:
-      enabled: true
-      connect-string: 127.0.0.1:2181
-
-
----
-spring:
-  profiles: consul
-
-  cloud:
-    consul:
-      enabled: true
-      host: 127.0.0.1
-      port: 8500
+#---
+#spring:
+#  profiles: eureka
+#
+#eureka:
+#  client:
+#    enabled: true
+#    service-url:
+#      defaultZone: http://127.0.0.1:8761/eureka/
+#
+#
+#---
+#spring:
+#  profiles: zookeeper
+#  cloud:
+#    zookeeper:
+#      enabled: true
+#      connect-string: 127.0.0.1:2181
+#
+#
+#---
+#spring:
+#  profiles: consul
+#
+#  cloud:
+#    consul:
+#      enabled: true
+#      host: 127.0.0.1
+#      port: 8500
