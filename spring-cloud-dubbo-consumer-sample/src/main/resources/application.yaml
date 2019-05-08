@@ -11,7 +11,7 @@ dubbo:
     subscribed-services: ${provider.application.name}
 
 server:
-  port: 0
+  port: 8088
 
 provider:
   application:

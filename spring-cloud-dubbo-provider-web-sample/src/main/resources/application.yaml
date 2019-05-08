@@ -8,6 +8,8 @@ dubbo:
   registries:
     new:
       address: spring-cloud://localhost
+  registry:
+    address: spring-cloud://localhost
 #  registry:
 #   The Spring Cloud Dubbo's registry extension
 #    address: spring-cloud://localhost
@@ -17,9 +19,6 @@ dubbo:
 feign:
   hystrix:
     enabled: true
-
-server:
-  port: 8086
 
 management:
   endpoints:

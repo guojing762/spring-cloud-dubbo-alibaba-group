@@ -13,7 +13,7 @@
     <groupId>org.springframework.cloud</groupId>
     <artifactId>spring-cloud-dubbo-consumer-sample</artifactId>
     <name>Spring Cloud Dubbo Consumer Sample</name>
-
+    <packaging>jar</packaging>
     <dependencies>
 
         <dependency>
