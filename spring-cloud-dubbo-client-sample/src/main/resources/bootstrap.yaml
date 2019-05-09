@@ -21,3 +21,5 @@ spring:
         file-extension: yaml
   profiles:
     active: dev
+server:
+  port: 8082

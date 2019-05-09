@@ -26,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.cloud.alibaba.dubbo.bootstrap.customer.SayService;
 import org.springframework.cloud.alibaba.dubbo.service.EchoService;
@@ -42,26 +43,14 @@ import java.util.Collections;
  */
 @EnableDiscoveryClient
 @EnableAutoConfiguration
-@RestController
-@ComponentScan(basePackages={"org.springframework.cloud.alibaba.dubbo.bootstrap"})
+//@ComponentScan(basePackages={"org.springframework.cloud.alibaba.dubbo.bootstrap"})
+@SpringBootApplication(scanBasePackages = "org.springframework.cloud.alibaba.dubbo.bootstrap")
 public class DubboSpringCloudClientBootstrap {
-
-    /**
-     * @Reference(version = "${foo.service.version}", application = "${dubbo.application.id}",
-     *         path = "dubbo://localhost:12345", timeout = 30000)
-     */
-    @Autowired
-    private SayService sayService;
-
-    @GetMapping("/echo")
-    public String echo(String message) {
-        return sayService.echo(message);
-    }
 
     public static void main(String[] args) {
         FlowRule flowRule = new FlowRule();
         flowRule.setResource(
-                "org.springframework.cloud.alibaba.dubbo.service:echo(java.lang.String)");
+                "org.springframework.cloud.alibaba.dubbo.service.EchoService:echo(java.lang.String)");
         flowRule.setCount(10);
         flowRule.setGrade(RuleConstant.FLOW_GRADE_QPS);
         flowRule.setLimitApp("default");
@@ -69,7 +58,7 @@ public class DubboSpringCloudClientBootstrap {
 
         SpringApplicationBuilder consumerBuilder = new SpringApplicationBuilder();
         ApplicationContext applicationContext = consumerBuilder
-                .web(WebApplicationType.NONE).sources(DubboSpringCloudClientBootstrap.class)
+                .sources(DubboSpringCloudClientBootstrap.class)
                 .run(args);
 
         SayService service = applicationContext.getBean(SayService.class);
